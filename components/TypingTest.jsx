@@ -57,6 +57,13 @@ const TypingTest = () => {
 
   // Handle input
   const handleKeyDown = (e) => {
+    // Add Tab+Enter shortcut to restart the test
+    if (e.key === "Enter" && e.getModifierState("Tab")) {
+      e.preventDefault();
+      resetTest();
+      return;
+    }
+    
     if (status !== "running") {
       return;
     }
@@ -411,6 +418,19 @@ const TypingTest = () => {
       {/* Combined text and typing area */}
       <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-4 min-h-40 max-h-60 overflow-y-auto focus-within:ring-2 focus-within:ring-blue-500">
         {renderText()}
+      </div>
+
+      {/* Try Again button below typing area */}
+      <div className="mb-6 text-center">
+        <button
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+          onClick={resetTest}
+        >
+          Try Again
+        </button>
+        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          Press Tab + Enter to restart
+        </div>
       </div>
 
       {/* Test history summary */}
