@@ -22,6 +22,11 @@ export default function Home() {
           </Suspense>
         </div>
 
+        <a href="https://haroonazizi.com/contact">
+          <button className="mt-8 px-8 py-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 text-white font-semibold hover:opacity-90 transition-opacity">
+            Contact Me
+          </button>
+        </a>
         <div className="mt-8 max-w-3xl w-full p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
           <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">
             Why Practice Typing?

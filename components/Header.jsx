@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -11,20 +11,25 @@ const Header = () => {
     <header className="w-full bg-blue-600 dark:bg-blue-900 text-white py-4 px-6 transition-colors">
       <div className="max-w-5xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <span className="text-2xl font-bold">SpeedType</span>
-          <span className="text-blue-200 text-sm">Beta</span>
+          <a
+            href="https://type.haroonazizi.com"
+            className="hover:text-blue-400"
+          >
+            <span className="text-3xl font-bold">Typing</span>
+            <span className="text-blue-200 text-sm"> Beta</span>
+          </a>
         </div>
         <nav className="flex items-center">
           <ul className="flex space-x-6 mr-6">
-            <li className="hover:text-blue-200 transition-colors cursor-pointer">
-              Practice
+            <li className="hover:text-blue-400 transition-colors cursor-pointer">
+              <a href="https://haroonazizi.com">Haroon Azizi</a>
             </li>
-            <li className="hover:text-blue-200 transition-colors cursor-pointer">
+            {/* <li className="hover:text-blue-200 transition-colors cursor-pointer">
               Stats
             </li>
             <li className="hover:text-blue-200 transition-colors cursor-pointer">
               About
-            </li>
+            </li> */}
           </ul>
           <button
             onClick={toggleTheme}
