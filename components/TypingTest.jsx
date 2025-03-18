@@ -1,4 +1,4 @@
-// components/TypingTest.jsx - With corrected WPM calculation
+// components/TypingTest.jsx - Fixed WPM calculation and UX improvements
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -21,16 +21,64 @@ const TypingTest = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [testHistory, setTestHistory] = useState([]);
   const [startTime, setStartTime] = useState(null);
+  const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });
 
   // Local refs
   const intervalRef = useRef(null);
-  const inputRef = useRef(null);
   const textDisplayRef = useRef(null);
+  const currentCharRef = useRef(null);
 
-  // Initialize text
+  // Initialize text and set focus
   useEffect(() => {
     setText(getRandomText());
-  }, [setText]);
+    // Set initial timer value
+    setTimeLeft(timer);
+  }, [setText, timer, setTimeLeft]);
+
+  // Auto-start when user starts typing
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore modifier keys and special keys
+      if (e.ctrlKey || e.altKey || e.metaKey || e.key.length > 1) return;
+
+      if (status === "idle") {
+        startTest();
+        // Capture the first character immediately
+        if (e.key.length === 1) {
+          setUserInput(e.key);
+          updateWordIndices(e.key);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [status]);
+
+  // Handle input
+  const handleKeyDown = (e) => {
+    if (status !== "running") {
+      return;
+    }
+
+    // Handle typing logic
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      const newInput = userInput.slice(0, -1);
+      setUserInput(newInput);
+      updateWordIndices(newInput);
+    } else if (e.key === " ") {
+      e.preventDefault();
+      const newInput = userInput + " ";
+      setUserInput(newInput);
+      updateWordIndices(newInput);
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+      e.preventDefault();
+      const newInput = userInput + e.key;
+      setUserInput(newInput);
+      updateWordIndices(newInput);
+    }
+  };
 
   // Handle timer
   useEffect(() => {
@@ -71,11 +119,36 @@ const TypingTest = () => {
     }
   }, [currentWordIndex, status]);
 
-  // Calculate typing statistics with corrected WPM
-  const calculateStats = () => {
-    // Standard WPM calculation: (characters typed / 5) / time in minutes
-    // 5 characters is the statistical average for word length in English
+  // Update cursor position
+  const updateCursorPosition = () => {
+    if (currentCharRef.current) {
+      const rect = currentCharRef.current.getBoundingClientRect();
+      const textRect = textDisplayRef.current.getBoundingClientRect();
 
+      setCursorPosition({
+        left: rect.right - textRect.left,
+        top: rect.top - textRect.top,
+      });
+    }
+  };
+
+  // Separate function for updating word indices and cursor position
+  const updateWordIndices = (input) => {
+    const words = text.split(" ");
+    const typed = input.split(" ");
+    const newWordIndex = Math.min(typed.length - 1, words.length - 1);
+    setCurrentWordIndex(newWordIndex);
+
+    if (typed.length <= words.length) {
+      setCurrentCharIndex(typed[typed.length - 1].length);
+    }
+
+    // Update cursor position immediately
+    requestAnimationFrame(updateCursorPosition);
+  };
+
+  // Calculate typing statistics with fixed WPM
+  const calculateStats = () => {
     // Count only correctly typed characters for accurate WPM
     let correctChars = 0;
     for (let i = 0; i < userInput.length; i++) {
@@ -87,12 +160,15 @@ const TypingTest = () => {
     // Calculate time in minutes (from actual start time for accuracy)
     const timeInMinutes = (Date.now() - startTime) / 60000;
 
+    // Use max(0.01, timeInMinutes) to prevent division by zero or very small numbers
+    const effectiveTimeInMinutes = Math.max(0.01, timeInMinutes);
+
     // Calculate WPM using the standard formula
-    const calculatedWPM = Math.round(correctChars / 5 / timeInMinutes);
+    const calculatedWPM = Math.round(correctChars / 5 / effectiveTimeInMinutes);
     setWordsPerMinute(calculatedWPM);
 
     // Calculate accuracy
-    const typedChars = userInput.length;
+    const typedChars = Math.max(1, userInput.length); // Prevent division by zero
     const calculatedAccuracy =
       Math.round((correctChars / typedChars) * 100) || 0;
     setAccuracy(calculatedAccuracy);
@@ -117,6 +193,23 @@ const TypingTest = () => {
     }
   };
 
+  // Calculate current WPM while typing
+  const calculateCurrentWPM = () => {
+    if (status !== "running" || !startTime || userInput.length === 0) {
+      return 0;
+    }
+
+    let correctChars = 0;
+    for (let i = 0; i < userInput.length; i++) {
+      if (i < text.length && userInput[i] === text[i]) {
+        correctChars++;
+      }
+    }
+
+    const timeInMinutes = Math.max(0.01, (Date.now() - startTime) / 60000);
+    return Math.round(correctChars / 5 / timeInMinutes);
+  };
+
   // Load history from local storage
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -139,35 +232,18 @@ const TypingTest = () => {
     setCurrentWordIndex(0);
     setCurrentCharIndex(0);
     setStartTime(Date.now()); // Record exact start time
-    if (inputRef.current) inputRef.current.focus();
+    textDisplayRef.current?.focus();
   };
 
   // Reset the test
   const resetTest = () => {
     setStatus("idle");
-    setTimeLeft(0);
+    setTimeLeft(timer);
     setUserInput("");
     setCurrentWordIndex(0);
     setCurrentCharIndex(0);
     setStartTime(null);
     setText(getRandomText());
-  };
-
-  // Handle input
-  const handleInputChange = (e) => {
-    if (status === "running") {
-      const newValue = e.target.value;
-      setUserInput(newValue);
-
-      // Update current word/char index for scrolling
-      const words = text.split(" ");
-      const typed = newValue.split(" ");
-      setCurrentWordIndex(typed.length - 1);
-
-      if (typed.length <= words.length) {
-        setCurrentCharIndex(typed[typed.length - 1].length);
-      }
-    }
   };
 
   // Display text with highlighting for typed characters
@@ -178,7 +254,9 @@ const TypingTest = () => {
     return (
       <div
         ref={textDisplayRef}
-        className="text-lg leading-relaxed whitespace-pre-wrap"
+        className="text-lg leading-relaxed whitespace-pre-wrap relative outline-none"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
       >
         {words.map((word, wordIdx) => {
           const isCurrentWord = wordIdx === currentWordIndex;
@@ -192,6 +270,8 @@ const TypingTest = () => {
             >
               {word.split("").map((char, charIdx) => {
                 let className = "";
+                const isCurrentChar =
+                  wordIdx === currentWordIndex && charIdx === currentCharIndex;
 
                 if (wordIdx < typed.length) {
                   if (wordIdx === typed.length - 1) {
@@ -212,7 +292,11 @@ const TypingTest = () => {
                 }
 
                 return (
-                  <span key={charIdx} className={className}>
+                  <span
+                    key={charIdx}
+                    className={className}
+                    ref={isCurrentChar ? currentCharRef : null}
+                  >
                     {char}
                   </span>
                 );
@@ -220,6 +304,17 @@ const TypingTest = () => {
             </span>
           );
         })}
+
+        {/* Typing cursor */}
+        {status === "running" && (
+          <span
+            className="absolute w-0.5 h-6 bg-blue-500 animate-blink transition-all duration-100"
+            style={{
+              left: `${cursorPosition.left}px`,
+              top: `${cursorPosition.top}px`,
+            }}
+          />
+        )}
       </div>
     );
   };
@@ -238,27 +333,10 @@ const TypingTest = () => {
     );
   };
 
-  // Calculate current WPM while typing
-  const calculateCurrentWPM = () => {
-    if (status !== "running" || !startTime || userInput.length === 0) {
-      return 0;
-    }
-
-    let correctChars = 0;
-    for (let i = 0; i < userInput.length; i++) {
-      if (i < text.length && userInput[i] === text[i]) {
-        correctChars++;
-      }
-    }
-
-    const timeInMinutes = (Date.now() - startTime) / 60000;
-    return Math.round(correctChars / 5 / timeInMinutes);
-  };
-
   const currentWPM = calculateCurrentWPM();
 
   return (
-    <div className="w-full">
+    <div className="w-full dark:bg-gray-800 dark:text-white">
       <TimerSelector
         selectedTime={timer}
         onSelectTime={(time) => {
@@ -269,12 +347,9 @@ const TypingTest = () => {
 
       <div className="mb-4 text-center">
         {status === "idle" && (
-          <button
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
-            onClick={startTest}
-          >
-            Start Typing Test
-          </button>
+          <div className="text-lg text-gray-600 dark:text-gray-300">
+            Start typing to begin...
+          </div>
         )}
 
         {status === "running" && (
@@ -333,64 +408,74 @@ const TypingTest = () => {
         )}
       </div>
 
-      {/* Display the text to type */}
-      <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-4 min-h-24 max-h-48 overflow-y-auto">
+      {/* Combined text and typing area */}
+      <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-4 min-h-40 max-h-60 overflow-y-auto focus-within:ring-2 focus-within:ring-blue-500">
         {renderText()}
       </div>
-
-      {/* Input field */}
-      {status !== "finished" && (
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={userInput}
-            onChange={handleInputChange}
-            disabled={status === "idle"}
-            className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-            placeholder={
-              status === "idle"
-                ? "Click 'Start' to begin typing..."
-                : "Start typing..."
-            }
-          />
-          {status === "idle" && (
-            <div className="absolute inset-0 bg-gray-100 dark:bg-gray-700 bg-opacity-50 dark:bg-opacity-50 flex items-center justify-center rounded-lg">
-              <span className="text-gray-600 dark:text-gray-300">
-                Click 'Start' button above to begin
-              </span>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Test history summary */}
       {testHistory.length > 0 && (
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
           <h3 className="font-bold text-gray-700 dark:text-gray-300 mb-2">
-            Your Recent Tests
+            Test History
           </h3>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="space-y-2">
             {testHistory
-              .slice(-3)
+              .slice(-5)
               .reverse()
-              .map((test, idx) => (
+              .map((test, index) => (
                 <div
-                  key={idx}
-                  className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600"
+                  key={index}
+                  className="flex justify-between items-center text-sm p-2 border-b border-gray-200 dark:border-gray-600"
                 >
-                  <div className="font-medium dark:text-gray-200">
-                    {test.wpm} WPM
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">
+                      {new Date(test.date).toLocaleDateString()}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(test.date).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {test.accuracy}% accuracy
-                  </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500">
-                    {test.duration}s test
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold text-blue-600 dark:text-blue-400">
+                        {test.wpm}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        WPM
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold text-green-600 dark:text-green-400">
+                        {test.accuracy}%
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        ACC
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {test.duration}s
+                    </div>
                   </div>
                 </div>
               ))}
           </div>
+          {testHistory.length > 5 && (
+            <div className="mt-2 text-center">
+              <button
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                onClick={() => {
+                  // View full history functionality would go here
+                  alert("Full history view coming soon!");
+                }}
+              >
+                View full history
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

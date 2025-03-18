@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "SpeedType - Improve Your Typing Speed",
+  title: "Typing - Haroon Azizi",
   description: "A modern typing speed test application",
 };
 
