@@ -8,7 +8,7 @@ export const metadata = {
   title: "Typing by Haroon Azizi",
   description: "Improve your typing speed and accuracy",
   icons: {
-    icon: "/favicon.ico",
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
   },
 };
 
