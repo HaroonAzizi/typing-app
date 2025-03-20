@@ -22,7 +22,7 @@ const Footer = () => {
             <a href="https://x.com/az_haroon">X/Twitter</a>
           </span>
           <span className="hover:text-white cursor-pointer transition-colors">
-            <a href="https://linkedin.com/haroon-azizi">LinkedIn</a>
+            <a href="https://linkedin.com/in/haroon-azizi">LinkedIn</a>
           </span>
           <span className="hover:text-white cursor-pointer transition-colors">
             <a href="https://haroonazizi.com/contact">Contact Me</a>
