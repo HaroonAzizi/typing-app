@@ -31,9 +31,10 @@ const TypingTest = () => {
   // Initialize text and set focus
   useEffect(() => {
     setText(getRandomText());
-    // Set initial timer value
-    setTimeLeft(timer);
-  }, [setText, timer, setTimeLeft]);
+    setTimeLeft(timer); // Now uses correct initial timer value
+  }, [setText, setTimeLeft]);
+
+  // Remove the useEffect that was setting timer to 15
 
   // Auto-start when user starts typing
   useEffect(() => {
@@ -356,6 +357,8 @@ const TypingTest = () => {
         selectedTime={timer}
         onSelectTime={(time) => {
           setTimer(time);
+          setTimeLeft(time);
+          setStatus("idle"); // Ensure we're in idle state
           resetTest();
         }}
       />
