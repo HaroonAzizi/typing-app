@@ -176,49 +176,40 @@ const TypingTest = () => {
   const calculateStats = () => {
     // Count only correctly typed characters for accurate WPM
     let correctChars = 0;
-    const minInputLength = Math.min(userInput.length, text.length);
+    const minLength = Math.min(userInput.length, text.length);
     
-    for (let i = 0; i < minInputLength; i++) {
+    for (let i = 0; i < minLength; i++) {
       if (userInput[i] === text[i]) {
         correctChars++;
       }
     }
 
-    // Calculate time in minutes using ACTUAL test duration
-    const testDuration = (Date.now() - startTime) / 1000;
+    // Calculate time elapsed in minutes
+    const endTime = Date.now();
+    // Use actual elapsed time, with a minimum of 1 second to avoid division by zero
+    const elapsedTimeInSeconds = Math.max(1, (endTime - startTime) / 1000);
+    const minutes = elapsedTimeInSeconds / 60;
     
-    // Use timer value if test duration is too short (prevents division issues)
-    const effectiveDuration = Math.max(5, testDuration); // Minimum 5 seconds
+    // Calculate WPM using standard formula: (characters / 5) / time in minutes
+    // 5 characters is the standard measure for a word
+    const wpm = Math.round((correctChars / 5) / minutes);
     
-    // Standard WPM calculation: (characters/5) / minutes
-    const minutes = effectiveDuration / 60;
-    const calculatedWPM = Math.round((correctChars / 5) / minutes);
-    
-    console.log("Stats:", { 
-      correctChars, 
-      testDuration, 
-      effectiveDuration, 
-      minutes, 
-      calculatedWPM 
-    });
-    
-    setWordsPerMinute(Math.max(1, calculatedWPM));
+    // Set WPM with a minimum of 1 if any characters were typed correctly
+    setWordsPerMinute(correctChars > 0 ? Math.max(1, wpm) : 0);
     
     // Calculate accuracy
-    const typedChars = Math.max(1, userInput.length); // Prevent division by zero
-    const calculatedAccuracy =
-      Math.round((correctChars / typedChars) * 100) || 0;
-    setAccuracy(calculatedAccuracy);
+    const accuracyPercentage = Math.round((correctChars / Math.max(1, userInput.length)) * 100);
+    setAccuracy(accuracyPercentage);
   
     // Save test history
     const newHistory = [
       ...testHistory,
       {
         date: new Date(),
-        wpm: Math.max(1, calculatedWPM), // Ensure WPM is not less than 1
-        accuracy: calculatedAccuracy,
+        wpm: wpm,
+        accuracy: accuracyPercentage,
         duration: timer,
-        charsTyped: typedChars,
+        charsTyped: userInput.length,
         correctChars: correctChars,
       },
     ];
