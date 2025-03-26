@@ -1,4 +1,4 @@
-// components/TypingTest.jsx - Fixed WPM calculation and UX improvements
+// components/TypingTest.jsx - Updated with portfolio styling
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -63,7 +63,7 @@ const TypingTest = () => {
       resetTest();
       return;
     }
-    
+
     if (status !== "running") {
       return;
     }
@@ -261,7 +261,7 @@ const TypingTest = () => {
     return (
       <div
         ref={textDisplayRef}
-        className="text-lg leading-relaxed whitespace-pre-wrap relative outline-none"
+        className="text-lg leading-relaxed whitespace-pre-wrap relative outline-none font-mono"
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
@@ -272,7 +272,7 @@ const TypingTest = () => {
             <span
               key={wordIdx}
               className={`inline-block mr-2 ${
-                isCurrentWord ? "bg-blue-50 dark:bg-blue-900" : ""
+                isCurrentWord ? "bg-theme-accent/10 rounded" : ""
               }`}
             >
               {word.split("").map((char, charIdx) => {
@@ -287,7 +287,7 @@ const TypingTest = () => {
                       className =
                         typed[wordIdx][charIdx] === char
                           ? "text-green-500"
-                          : "text-red-500 bg-red-100 dark:bg-red-900";
+                          : "text-red-500 bg-red-100/10 rounded";
                     }
                   } else {
                     // Past word
@@ -315,7 +315,7 @@ const TypingTest = () => {
         {/* Typing cursor */}
         {status === "running" && (
           <span
-            className="absolute w-0.5 h-6 bg-blue-500 animate-blink transition-all duration-100"
+            className="absolute w-0.5 h-6 bg-theme-accent animate-blink transition-all duration-100"
             style={{
               left: `${cursorPosition.left}px`,
               top: `${cursorPosition.top}px`,
@@ -331,9 +331,9 @@ const TypingTest = () => {
     const progress = ((timer - timeLeft) / timer) * 100;
 
     return (
-      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-theme-secondary rounded-full overflow-hidden">
         <div
-          className="h-full bg-blue-600 dark:bg-blue-500 transition-all duration-1000 ease-linear"
+          className="h-full bg-theme-accent transition-all duration-1000 ease-linear"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -343,7 +343,7 @@ const TypingTest = () => {
   const currentWPM = calculateCurrentWPM();
 
   return (
-    <div className="w-full dark:bg-gray-800 dark:text-white">
+    <div className="w-full text-theme-text">
       <TimerSelector
         selectedTime={timer}
         onSelectTime={(time) => {
@@ -351,10 +351,9 @@ const TypingTest = () => {
           resetTest();
         }}
       />
-
       <div className="mb-4 text-center">
         {status === "idle" && (
-          <div className="text-lg text-gray-600 dark:text-gray-300">
+          <div className="text-lg text-theme-text-muted">
             Start typing to begin...
           </div>
         )}
@@ -362,11 +361,11 @@ const TypingTest = () => {
         {status === "running" && (
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-xl font-bold text-theme-accent">
                 {timeLeft}s left
               </div>
               {currentWPM > 0 && (
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                <div className="text-sm font-medium text-theme-text-muted">
                   Current: {currentWPM} WPM
                 </div>
               )}
@@ -377,127 +376,90 @@ const TypingTest = () => {
 
         {status === "finished" && (
           <div className="space-y-4">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              Test Completed!
+            <div className="text-2xl font-bold bg-gradient-to-r from-theme-accent to-theme-accent-light bg-clip-text text-transparent">
+              Test Complete!
             </div>
-            <div className="flex justify-center gap-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold">{wordsPerMinute}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  Words per minute
+
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="glass-card p-4 text-center">
+                <div className="text-theme-text-muted text-sm mb-1">Speed</div>
+                <div className="text-3xl font-bold text-theme-accent">
+                  {wordsPerMinute}
                 </div>
+                <div className="text-theme-text-muted text-xs">WPM</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold">{accuracy}%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+
+              <div className="glass-card p-4 text-center">
+                <div className="text-theme-text-muted text-sm mb-1">
                   Accuracy
                 </div>
+                <div className="text-3xl font-bold text-theme-accent">
+                  {accuracy}%
+                </div>
+                <div className="text-theme-text-muted text-xs">correct</div>
               </div>
             </div>
-            <div className="flex gap-4 justify-center">
-              <button
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
-                onClick={resetTest}
-              >
-                Try Again
-              </button>
-              <button
-                className="px-6 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-500 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors"
-                onClick={() => {
-                  // Share functionality would go here
-                  alert("Share feature coming soon!");
-                }}
-              >
-                Share Results
-              </button>
-            </div>
+
+            <button onClick={resetTest} className="btn-modern w-full">
+              Try Again
+            </button>
           </div>
         )}
       </div>
-
-      {/* Combined text and typing area */}
-      <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-4 min-h-40 max-h-60 overflow-y-auto focus-within:ring-2 focus-within:ring-blue-500">
+      <div className="mt-6 glass-card p-6 min-h-[200px] max-h-[300px] overflow-y-auto">
         {renderText()}
       </div>
-
-      {/* Try Again button below typing area */}
-      <div className="mb-6 text-center">
-        <button
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
-          onClick={resetTest}
+      
+      {/* Restart button */}
+      <div className="mt-4 flex justify-center">
+        <button 
+          onClick={resetTest} 
+          className="px-4 py-2 bg-theme-secondary hover:bg-theme-secondary/80 text-theme-text-muted hover:text-theme-text rounded-md transition-colors flex items-center"
         >
-          Try Again
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Restart Test
         </button>
-        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-          Press Tab + Enter to restart
-        </div>
       </div>
-
-      {/* Test history summary */}
-      {testHistory.length > 0 && (
-        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <h3 className="font-bold text-gray-700 dark:text-gray-300 mb-2">
-            Test History
+      
+      {status === "finished" && testHistory.length > 1 && (
+        <div className="mt-8 glass-card p-6">
+          <h3 className="text-xl font-bold text-theme-text mb-4">
+            Your Progress
           </h3>
-          <div className="space-y-2">
-            {testHistory
-              .slice(-5)
-              .reverse()
-              .map((test, index) => (
+          <div className="h-40 relative">
+            {/* Simple chart visualization could go here */}
+            <div className="absolute inset-0 flex items-end">
+              {testHistory.slice(-10).map((test, i) => (
                 <div
-                  key={index}
-                  className="flex justify-between items-center text-sm p-2 border-b border-gray-200 dark:border-gray-600"
+                  key={i}
+                  className="flex-1 mx-1 bg-theme-accent hover:bg-theme-accent-light transition-colors relative group"
+                  style={{ height: `${Math.min(100, test.wpm / 2)}%` }}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">
-                      {new Date(test.date).toLocaleDateString()}
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {new Date(test.date).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <span className="font-bold text-blue-600 dark:text-blue-400">
-                        {test.wpm}
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        WPM
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="font-bold text-green-600 dark:text-green-400">
-                        {test.accuracy}%
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        ACC
-                      </span>
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {test.duration}s
-                    </div>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary px-2 py-1 rounded text-xs whitespace-nowrap">
+                    {test.wpm} WPM, {test.accuracy}% acc
                   </div>
                 </div>
               ))}
-          </div>
-          {testHistory.length > 5 && (
-            <div className="mt-2 text-center">
-              <button
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                onClick={() => {
-                  // View full history functionality would go here
-                  alert("Full history view coming soon!");
-                }}
-              >
-                View full history
-              </button>
             </div>
-          )}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-theme-text-muted"></div>
+          </div>
         </div>
       )}
+      <div className="mt-6 text-center text-theme-text-muted text-sm">
+        <p>
+          Press{" "}
+          <kbd className="px-2 py-1 bg-theme-secondary rounded font-mono text-xs">
+            Tab
+          </kbd>{" "}
+          +{" "}
+          <kbd className="px-2 py-1 bg-theme-secondary rounded font-mono text-xs">
+            Enter
+          </kbd>{" "}
+          to restart the test
+        </p>
+      </div>
     </div>
   );
 };

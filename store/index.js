@@ -1,14 +1,16 @@
 // store/index.js
-import { createGlobalState } from "react-hooks-global-state";
+import { createGlobalState } from 'react-hooks-global-state';
 
 const initialState = {
-  text: "",
-  userInput: "",
-  timer: 30, // Default timer value
-  timeLeft: 30, // Initialize timeLeft to match timer
-  status: "idle", // 'idle', 'running', 'finished'
+  timer: 30, // Default timer value in seconds
+  timeLeft: 30,
+  status: 'idle', // idle, running, finished
+  text: '',
+  userInput: '',
   wordsPerMinute: 0,
   accuracy: 0,
 };
 
-export const { useGlobalState } = createGlobalState(initialState);
+const { useGlobalState } = createGlobalState(initialState);
+
+export { useGlobalState };

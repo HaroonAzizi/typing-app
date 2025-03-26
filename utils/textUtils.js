@@ -1,42 +1,52 @@
 // utils/textUtils.js
 
-// Sample paragraphs to type
-// Sample paragraphs to type
-const paragraphs = [
-  "apple banana cherry dog elephant fish grape house igloo jelly kite lemon mango notebook orange parrot queen rabbit snake tiger umbrella violin whale xylophone yellow zebra.",
-  "blue cat door egg flower garden happy ice jump kangaroo lamp moon nest open pencil quiet rainbow sun tree under van window x-ray yogurt zoo.",
-  "air ball cake dance easy frog gift hat idea joy kind leaf music nice ocean pink quick road smile train unique voice water xylophone young zebra.",
-  "ant box cup drum echo fire gold hill island joy kite light mother north oak purple question river silver table unicorn visit windy xerox yummy zest.",
-  "boat chair dream eager feather green hero insect jug knife ladder mountain number oven picture quiet rose sugar telephone universe vacation winter xylophone yesterday zookeeper.",
-  "carpet delicious engine festival gentle honey iron jungle koala laptop marble necklace onion pancake quill radio sandwich trumpet uniform valley wonderful x-ray yellow zigzag.",
-  "artist bakery castle dolphin elephant forest garden holiday insect journal kingdom lantern melody necklace octopus passport quiver rainbow sunshine treasure universe victory wizard xylophone yummy zebra.",
-  "bridge circus dragon emperor fantasy glacier horizon iceberg journey kingdom lighthouse meadow notebook orchestra planet quest riddle sunset tornado umbrella voyage waterfall xylophone youthful zestful.",
-  "astronaut bicycle chocolate dinosaur envelope festival galaxy harmony island joyful kindness landscape melody necklace orchestra paradise question romance symphony treasure universe volcano wonderland xylophone yesterday zebra.",
-  "adventure butterfly chocolate discovery elephant friendship galaxy happiness imagination joyful kindness laughter mountain nature ocean paradise question rainbow sunshine telescope universe vacation waterfall xylophone youthful zephyr.",
-  "acorn balloon champion delight energy freedom gratitude harmony interest jungle kindness laughter melody night owl peanut quality rainbow sparkle thunder uplift vibrant wonderful xylophone youthful zebra.",
-  "alphabet blossom coconut dolphin echo fountain grateful horizon imagine joyful kindness laughter melody nectar optimism peaceful quiet retreat sparkle treasure unicorn vacation wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "adventure brilliant chocolate delightful exciting fantastic glowing holiday imagination joyful kindness laughter melody nectar optimism peaceful question rainbow sunshine treasure unique vibrant wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "beach coconut dragonfire emerald feather gemstone harmony imagination joyful kite lighthouse mountain necklace oasis peaceful quiet rainbow starlight treasure universe vacation waterfall xylophone youthful zestful.",
-  "dandelion enchantment fantasy giggle happiness ice cream joyful kindness laughter melody night ocean paradise quest romance starlight treasure umbrella vacation wonderful xylophone youthful zephyr.",
-  "aurora butterfly chocolate discovery echo firefly garden happiness island joyful kindness laughter melody nature optimism peaceful quest rainbow sunshine twinkle universe vacation wonderful xylophone youthful zest.",
-  "adventure blissful carnival delightful enchantment fantasy glowing harmony imagination joyful kindness laughter melody night ocean paradise question rainbow sparkle treasure universe vacation wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "storybook adventure balloon circus delightful emerald fantastic glowing holiday inspiration joyful kindness laughter melody night ocean paradise quiver rainbow sparkle treasure universe vacation wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "bridge carousel dolphin echo firefly garden harmony ice cream joyful kite lighthouse mountain necklace oasis peaceful quiet rainbow starlight treasure umbrella vacation waterfall xylophone youthful zestful.",
-  "dandelion enchantment fantasy giggle happiness ice cream joyful kindness laughter melody night ocean paradise quest romance starlight treasure umbrella vacation wonderful xylophone youthful zephyr.",
-  "aurora butterfly chocolate discovery echo firefly garden happiness island joyful kindness laughter melody nature optimism peaceful quest rainbow sunshine twinkle universe vacation wonderful xylophone youthful zest.",
-  "adventure blissful carnival delightful enchantment fantasy glowing harmony imagination joyful kindness laughter melody night ocean paradise question rainbow sparkle treasure universe vacation wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "storybook adventure balloon circus delightful emerald fantastic glowing holiday inspiration joyful kindness laughter melody night ocean paradise quiver rainbow sparkle treasure universe vacation wonderful xylophone youthful zest.",
-  "butterfly cupcake daisy elephant fantasy giggle happiness ice cream journey kangaroo lemonade moonlight nectar optimism picnic quiver rainbow sunshine tulip umbrella vacation wonderful xylophone youthful zest.",
-  "bridge carousel dolphin echo firefly garden harmony ice cream joyful kite lighthouse mountain necklace oasis peaceful quiet rainbow starlight treasure umbrella vacation waterfall xylophone youthful zestful.",
+// Sample text passages for typing tests
+const textSamples = [
+  "The quick brown fox jumps over the lazy dog. This pangram contains every letter of the English alphabet at least once. Pangrams are often used to test fonts, keyboards, and other text-related tools.",
+
+  "Programming is the process of creating a set of instructions that tell a computer how to perform a task. Programming can be done using a variety of computer programming languages, such as JavaScript, Python, and C++.",
+
+  "React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta and a community of individual developers and companies.",
+
+  "TypeScript is a programming language developed and maintained by Microsoft. It is a strict syntactical superset of JavaScript and adds optional static typing to the language. TypeScript is designed for the development of large applications and transcompiles to JavaScript.",
+
+  "The World Wide Web, commonly known as the Web, is an information system enabling documents and other web resources to be accessed over the Internet. Documents and downloadable media are made available to the network through web servers and can be accessed by programs such as web browsers.",
+
+  "Artificial intelligence is intelligence demonstrated by machines, as opposed to the natural intelligence displayed by animals including humans. AI research has been defined as the field of study of intelligent agents, which refers to any system that perceives its environment and takes actions that maximize its chance of achieving its goals.",
+
+  "Cloud computing is the on-demand availability of computer system resources, especially data storage and computing power, without direct active management by the user. Large clouds often have functions distributed over multiple locations, each location being a data center.",
+
+  "Software engineering is the systematic application of engineering approaches to the development of software. Software engineering is a computing discipline.",
+
+  "A keyboard is a typewriter-style device which uses an arrangement of buttons or keys to act as mechanical levers or electronic switches. Keyboards are the primary devices used for inputting text.",
+
+  "The Internet is a global system of interconnected computer networks that use the Internet protocol suite to communicate between networks and devices. It is a network of networks that consists of private, public, academic, business, and government networks of local to global scope, linked by a broad array of electronic, wireless, and optical networking technologies.",
 ];
 
-// Function to get a random paragraph
+// Function to get a random text sample
 export const getRandomText = () => {
-  const randomIndex = Math.floor(Math.random() * paragraphs.length);
-  return paragraphs[randomIndex];
+  const randomIndex = Math.floor(Math.random() * textSamples.length);
+  return textSamples[randomIndex];
+};
+
+// Function to calculate typing statistics
+export const calculateStats = (text, userInput, timeInSeconds) => {
+  // Count correctly typed characters
+  let correctChars = 0;
+  for (let i = 0; i < userInput.length; i++) {
+    if (i < text.length && userInput[i] === text[i]) {
+      correctChars++;
+    }
+  }
+
+  // Calculate WPM: (characters / 5) / minutes
+  const timeInMinutes = timeInSeconds / 60;
+  const wpm = Math.round(correctChars / 5 / timeInMinutes);
+
+  // Calculate accuracy
+  const accuracy = Math.round(
+    (correctChars / Math.max(1, userInput.length)) * 100
+  );
+
+  return { wpm, accuracy };
 };
