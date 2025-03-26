@@ -135,6 +135,15 @@ const TypingTest = () => {
     };
   }, [status, setTimeLeft, setStatus, startTime]);
 
+  // Add this new effect here to handle early completion
+  useEffect(() => {
+    if (status === 'running' && userInput === text) {
+      clearInterval(intervalRef.current);
+      setStatus('finished');
+      calculateStats();
+    }
+  }, [userInput, text, status]); // Removed calculateStats from dependencies
+
   // Auto-scroll text display to keep current word visible
   useEffect(() => {
     if (textDisplayRef.current && status === "running") {
@@ -167,34 +176,46 @@ const TypingTest = () => {
   const calculateStats = () => {
     // Count only correctly typed characters for accurate WPM
     let correctChars = 0;
-    for (let i = 0; i < userInput.length; i++) {
-      if (i < text.length && userInput[i] === text[i]) {
+    const minInputLength = Math.min(userInput.length, text.length);
+    
+    for (let i = 0; i < minInputLength; i++) {
+      if (userInput[i] === text[i]) {
         correctChars++;
       }
     }
 
-    // Calculate time in minutes (from actual start time for accuracy)
-    const timeInMinutes = (Date.now() - startTime) / 60000;
-
-    // Use max(0.01, timeInMinutes) to prevent division by zero or very small numbers
-    const effectiveTimeInMinutes = Math.max(0.01, timeInMinutes);
-
-    // Calculate WPM using the standard formula
-    const calculatedWPM = Math.round(correctChars / 5 / effectiveTimeInMinutes);
-    setWordsPerMinute(calculatedWPM);
-
+    // Calculate time in minutes using ACTUAL test duration
+    const testDuration = (Date.now() - startTime) / 1000;
+    
+    // Use timer value if test duration is too short (prevents division issues)
+    const effectiveDuration = Math.max(5, testDuration); // Minimum 5 seconds
+    
+    // Standard WPM calculation: (characters/5) / minutes
+    const minutes = effectiveDuration / 60;
+    const calculatedWPM = Math.round((correctChars / 5) / minutes);
+    
+    console.log("Stats:", { 
+      correctChars, 
+      testDuration, 
+      effectiveDuration, 
+      minutes, 
+      calculatedWPM 
+    });
+    
+    setWordsPerMinute(Math.max(1, calculatedWPM));
+    
     // Calculate accuracy
     const typedChars = Math.max(1, userInput.length); // Prevent division by zero
     const calculatedAccuracy =
       Math.round((correctChars / typedChars) * 100) || 0;
     setAccuracy(calculatedAccuracy);
-
+  
     // Save test history
     const newHistory = [
       ...testHistory,
       {
         date: new Date(),
-        wpm: calculatedWPM,
+        wpm: Math.max(1, calculatedWPM), // Ensure WPM is not less than 1
         accuracy: calculatedAccuracy,
         duration: timer,
         charsTyped: typedChars,
@@ -202,7 +223,7 @@ const TypingTest = () => {
       },
     ];
     setTestHistory(newHistory);
-
+  
     // Save to local storage if available
     if (typeof window !== "undefined") {
       localStorage.setItem("typingHistory", JSON.stringify(newHistory));
@@ -337,13 +358,14 @@ const TypingTest = () => {
 
   // Progress bar for timer
   const renderProgressBar = () => {
-    const progress = ((timer - timeLeft) / timer) * 100;
+    const elapsedTime = Date.now() - startTime;
+    const progress = (elapsedTime / (timer * 1000)) * 100;
 
     return (
       <div className="w-full h-2 bg-theme-secondary rounded-full overflow-hidden">
         <div
           className="h-full bg-theme-accent transition-all duration-1000 ease-linear"
-          style={{ width: `${progress}%` }}
+          style={{ width: `${Math.min(100, progress)}%` }}
         />
       </div>
     );

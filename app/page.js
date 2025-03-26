@@ -32,61 +32,16 @@ export default function Home() {
             <div className="flex items-center space-x-6">
               {/* Social Links with tooltips */}
               <div className="hidden md:flex items-center space-x-4 mr-4">
-                <div className="group relative">
-                  <a
-                    href="https://x.com/az_haroon"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
-                    aria-label="Twitter"
-                  >
-                    <FaSquareXTwitter size={20} />
-                  </a>
-                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
-                    Twitter
-                  </span>
-                </div>
-
-                <div className="group relative">
-                  <a
-                    href="https://github.com/HaroonAzizi"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
-                    aria-label="GitHub"
-                  >
-                    <FaGithub size={20} />
-                  </a>
-                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
-                    GitHub
-                  </span>
-                </div>
-
-                <div className="group relative">
-                  <a
-                    href="https://linkedin.com/in/Haroon-Azizi"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin size={20} />
-                  </a>
-                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
-                    LinkedIn
-                  </span>
-                </div>
+                {/* Social links here... */}
               </div>
 
-              {/* Glowing Contact Button */}
+              {/* Contact Button - Fixed for smaller screens */}
               <a
-                href="https://haroonazizi.com/contact"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center px-4 py-2 bg-theme-accent hover:bg-theme-accent-light text-white rounded-lg transition-all duration-300 shadow-glow hover:shadow-glow-lg transform hover:-translate-y-1"
+                href="mailto:contact@haroonazizi.com"
+                className="bg-theme-accent hover:bg-theme-accent-light text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center whitespace-nowrap text-sm md:text-base"
               >
                 <FaEnvelope className="mr-2" />
-                <span className="font-medium">Contact Me</span>
+                Contact Me
               </a>
             </div>
           </div>
