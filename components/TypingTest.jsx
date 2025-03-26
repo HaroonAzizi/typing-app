@@ -55,6 +55,19 @@ const TypingTest = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [status]);
 
+  // Update cursor position
+  const updateCursorPosition = () => {
+    if (currentCharRef.current) {
+      const rect = currentCharRef.current.getBoundingClientRect();
+      const textRect = textDisplayRef.current.getBoundingClientRect();
+
+      setCursorPosition({
+        left: rect.left - textRect.left, // Changed from rect.right to rect.left
+        top: rect.top - textRect.top,
+      });
+    }
+  };
+
   // Handle input
   const handleKeyDown = (e) => {
     // Add Tab+Enter shortcut to restart the test
@@ -71,9 +84,18 @@ const TypingTest = () => {
     // Handle typing logic
     if (e.key === "Backspace") {
       e.preventDefault();
-      const newInput = userInput.slice(0, -1);
-      setUserInput(newInput);
-      updateWordIndices(newInput);
+      
+      // Only allow backspace if we're not at the beginning of the current word
+      // This prevents editing completed words
+      const lastSpaceIndex = userInput.lastIndexOf(" ");
+      if (lastSpaceIndex !== userInput.length - 1) {
+        // We're not right after a space, so allow backspace
+        const newInput = userInput.slice(0, -1);
+        setUserInput(newInput);
+        updateWordIndices(newInput);
+      }
+      // If we're at a space after a completed word, backspace does nothing
+      
     } else if (e.key === " ") {
       e.preventDefault();
       const newInput = userInput + " ";
@@ -125,19 +147,6 @@ const TypingTest = () => {
       }
     }
   }, [currentWordIndex, status]);
-
-  // Update cursor position
-  const updateCursorPosition = () => {
-    if (currentCharRef.current) {
-      const rect = currentCharRef.current.getBoundingClientRect();
-      const textRect = textDisplayRef.current.getBoundingClientRect();
-
-      setCursorPosition({
-        left: rect.right - textRect.left,
-        top: rect.top - textRect.top,
-      });
-    }
-  };
 
   // Separate function for updating word indices and cursor position
   const updateWordIndices = (input) => {
