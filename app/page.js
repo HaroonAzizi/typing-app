@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import TypingTest from "../components/TypingTest";
-import { FaGithub, FaLinkedin, FaCode, FaTerminal } from "react-icons/fa";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaCode,
+  FaTerminal,
+  FaEnvelope,
+} from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 
@@ -22,51 +28,65 @@ export default function Home() {
               <span className="font-mono">HaroonAzizi</span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8 px-6 py-2">
-              <Link
-                href="https://haroonazizi.com"
-                className="mt-2 hover:text-theme-accent transition-colors text-lg relative group font-medium text-theme-text"
-              >
-                Portfolio
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-theme-accent transition-all group-hover:w-full"></span>
-              </Link>
-              <a
-                href="https://github.com/HaroonAzizi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 hover:text-theme-accent transition-colors text-lg relative group font-medium text-theme-text"
-              >
-                GitHub
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-theme-accent transition-all group-hover:w-full"></span>
-              </a>
-            </div>
+            {/* Contact Button and Social Links */}
+            <div className="flex items-center space-x-6">
+              {/* Social Links with tooltips */}
+              <div className="hidden md:flex items-center space-x-4 mr-4">
+                <div className="group relative">
+                  <a
+                    href="https://x.com/az_haroon"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
+                    aria-label="Twitter"
+                  >
+                    <FaSquareXTwitter size={20} />
+                  </a>
+                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
+                    Twitter
+                  </span>
+                </div>
 
-            {/* Social Links */}
-            <div className="flex items-center space-x-4">
+                <div className="group relative">
+                  <a
+                    href="https://github.com/HaroonAzizi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
+                    aria-label="GitHub"
+                  >
+                    <FaGithub size={20} />
+                  </a>
+                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
+                    GitHub
+                  </span>
+                </div>
+
+                <div className="group relative">
+                  <a
+                    href="https://linkedin.com/in/Haroon-Azizi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-theme-text-muted hover:text-theme-accent transition-colors p-2 flex items-center justify-center"
+                    aria-label="LinkedIn"
+                  >
+                    <FaLinkedin size={20} />
+                  </a>
+                  <span className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary text-theme-text text-xs py-1 px-2 rounded pointer-events-none">
+                    LinkedIn
+                  </span>
+                </div>
+              </div>
+
+              {/* Glowing Contact Button */}
               <a
-                href="https://x.com/az_haroon"
+                href="https://haroonazizi.com/contact"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
+                className="flex items-center px-4 py-2 bg-theme-accent hover:bg-theme-accent-light text-white rounded-lg transition-all duration-300 shadow-glow hover:shadow-glow-lg transform hover:-translate-y-1"
               >
-                <FaSquareXTwitter size={20} />
-              </a>
-              <a
-                href="https://github.com/HaroonAzizi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
-              >
-                <FaGithub size={20} />
-              </a>
-              <a
-                href="https://linkedin.com/in/Haroon-Azizi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
-              >
-                <FaLinkedin size={20} />
+                <FaEnvelope className="mr-2" />
+                <span className="font-medium">Contact Me</span>
               </a>
             </div>
           </div>
