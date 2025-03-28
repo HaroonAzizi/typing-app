@@ -1,4 +1,3 @@
-// components/Header.jsx - Updated with theme toggle
 "use client";
 
 import React from "react";

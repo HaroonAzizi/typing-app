@@ -1,4 +1,3 @@
-// components/TypingTest.jsx - Updated with portfolio styling
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -137,9 +136,9 @@ const TypingTest = () => {
 
   // Add this new effect here to handle early completion
   useEffect(() => {
-    if (status === 'running' && userInput === text) {
+    if (status === "running" && userInput === text) {
       clearInterval(intervalRef.current);
-      setStatus('finished');
+      setStatus("finished");
       calculateStats();
     }
   }, [userInput, text, status]); // Removed calculateStats from dependencies
@@ -177,7 +176,7 @@ const TypingTest = () => {
     // Count only correctly typed characters for accurate WPM
     let correctChars = 0;
     const minLength = Math.min(userInput.length, text.length);
-    
+
     for (let i = 0; i < minLength; i++) {
       if (userInput[i] === text[i]) {
         correctChars++;
@@ -189,18 +188,20 @@ const TypingTest = () => {
     // Use actual elapsed time, with a minimum of 1 second to avoid division by zero
     const elapsedTimeInSeconds = Math.max(1, (endTime - startTime) / 1000);
     const minutes = elapsedTimeInSeconds / 60;
-    
+
     // Calculate WPM using standard formula: (characters / 5) / time in minutes
     // 5 characters is the standard measure for a word
-    const wpm = Math.round((correctChars / 5) / minutes);
-    
+    const wpm = Math.round(correctChars / 5 / minutes);
+
     // Set WPM with a minimum of 1 if any characters were typed correctly
     setWordsPerMinute(correctChars > 0 ? Math.max(1, wpm) : 0);
-    
+
     // Calculate accuracy
-    const accuracyPercentage = Math.round((correctChars / Math.max(1, userInput.length)) * 100);
+    const accuracyPercentage = Math.round(
+      (correctChars / Math.max(1, userInput.length)) * 100
+    );
     setAccuracy(accuracyPercentage);
-  
+
     // Save test history
     const newHistory = [
       ...testHistory,
@@ -214,7 +215,7 @@ const TypingTest = () => {
       },
     ];
     setTestHistory(newHistory);
-  
+
     // Save to local storage if available
     if (typeof window !== "undefined") {
       localStorage.setItem("typingHistory", JSON.stringify(newHistory));

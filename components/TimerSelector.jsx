@@ -1,4 +1,3 @@
-// components/TimerSelector.jsx
 "use client";
 
 import React from "react";
