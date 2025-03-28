@@ -21,11 +21,13 @@ const TypingTest = () => {
   const [testHistory, setTestHistory] = useState([]);
   const [startTime, setStartTime] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });
-
+  const [maxWpm, setMaxWpm] = useState(0); // Track maximum WPM during the test
+  
   // Local refs
   const intervalRef = useRef(null);
   const textDisplayRef = useRef(null);
   const currentCharRef = useRef(null);
+  const wpmCheckRef = useRef(null); // For checking WPM regularly
 
   // Initialize text and set focus
   useEffect(() => {
@@ -116,10 +118,19 @@ const TypingTest = () => {
         setStartTime(Date.now());
       }
 
+      // Check and update max WPM regularly
+      wpmCheckRef.current = setInterval(() => {
+        const currentWpm = calculateCurrentWPM();
+        if (currentWpm > maxWpm) {
+          setMaxWpm(currentWpm);
+        }
+      }, 500); // Check twice per second
+
       intervalRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
+            clearInterval(wpmCheckRef.current);
             setStatus("finished");
             calculateStats();
             return 0;
@@ -131,17 +142,19 @@ const TypingTest = () => {
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
+      if (wpmCheckRef.current) clearInterval(wpmCheckRef.current);
     };
-  }, [status, setTimeLeft, setStatus, startTime]);
+  }, [status, setTimeLeft, setStatus, startTime, maxWpm]);
 
   // Add this new effect here to handle early completion
   useEffect(() => {
     if (status === "running" && userInput === text) {
       clearInterval(intervalRef.current);
+      clearInterval(wpmCheckRef.current);
       setStatus("finished");
       calculateStats();
     }
-  }, [userInput, text, status]); // Removed calculateStats from dependencies
+  }, [userInput, text, status]);
 
   // Auto-scroll text display to keep current word visible
   useEffect(() => {
@@ -173,6 +186,9 @@ const TypingTest = () => {
 
   // Calculate typing statistics with fixed WPM
   const calculateStats = () => {
+    // Use the maximum WPM recorded during the test, or calculate if none
+    const finalWpm = maxWpm > 0 ? maxWpm : calculateFinalWPM();
+    
     // Count only correctly typed characters for accurate WPM
     let correctChars = 0;
     const minLength = Math.min(userInput.length, text.length);
@@ -183,31 +199,21 @@ const TypingTest = () => {
       }
     }
 
-    // Calculate time elapsed in minutes
-    const endTime = Date.now();
-    // Use actual elapsed time, with a minimum of 1 second to avoid division by zero
-    const elapsedTimeInSeconds = Math.max(1, (endTime - startTime) / 1000);
-    const minutes = elapsedTimeInSeconds / 60;
-
-    // Calculate WPM using standard formula: (characters / 5) / time in minutes
-    // 5 characters is the standard measure for a word
-    const wpm = Math.round(correctChars / 5 / minutes);
-
-    // Set WPM with a minimum of 1 if any characters were typed correctly
-    setWordsPerMinute(correctChars > 0 ? Math.max(1, wpm) : 0);
-
     // Calculate accuracy
     const accuracyPercentage = Math.round(
       (correctChars / Math.max(1, userInput.length)) * 100
     );
     setAccuracy(accuracyPercentage);
+    
+    // Set the final WPM
+    setWordsPerMinute(finalWpm);
 
     // Save test history
     const newHistory = [
       ...testHistory,
       {
         date: new Date(),
-        wpm: wpm,
+        wpm: finalWpm,
         accuracy: accuracyPercentage,
         duration: timer,
         charsTyped: userInput.length,
@@ -220,6 +226,26 @@ const TypingTest = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("typingHistory", JSON.stringify(newHistory));
     }
+  };
+
+  // Calculate final WPM if no history is available
+  const calculateFinalWPM = () => {
+    if (!startTime || userInput.length === 0) {
+      return 0;
+    }
+
+    let correctChars = 0;
+    for (let i = 0; i < userInput.length; i++) {
+      if (i < text.length && userInput[i] === text[i]) {
+        correctChars++;
+      }
+    }
+
+    const endTime = Date.now();
+    const elapsedTimeInSeconds = Math.max(1, (endTime - startTime) / 1000);
+    const minutes = elapsedTimeInSeconds / 60;
+    
+    return Math.round(correctChars / 5 / minutes);
   };
 
   // Calculate current WPM while typing
@@ -272,6 +298,7 @@ const TypingTest = () => {
     setCurrentWordIndex(0);
     setCurrentCharIndex(0);
     setStartTime(null);
+    setMaxWpm(0); // Reset the maximum WPM
     setText(getRandomText());
   };
 
