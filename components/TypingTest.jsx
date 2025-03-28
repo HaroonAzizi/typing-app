@@ -189,7 +189,7 @@ const TypingTest = () => {
     // Use the maximum WPM recorded during the test, or calculate if none
     const finalWpm = maxWpm > 0 ? maxWpm : calculateFinalWPM();
     
-    // Count only correctly typed characters for accurate WPM
+    // Count correctly typed characters for accurate WPM and accuracy
     let correctChars = 0;
     const minLength = Math.min(userInput.length, text.length);
 
@@ -199,7 +199,7 @@ const TypingTest = () => {
       }
     }
 
-    // Calculate accuracy
+    // Calculate accuracy - correctly typed characters divided by total typed characters
     const accuracyPercentage = Math.round(
       (correctChars / Math.max(1, userInput.length)) * 100
     );
@@ -441,11 +441,11 @@ const TypingTest = () => {
                 <div className="text-theme-text-muted text-xs">WPM</div>
               </div>
 
-              <div className="glass-card p-4 text-center">
+              <div className="glass-card p-4 text-center opacity-50">
                 <div className="text-theme-text-muted text-sm mb-1">
                   Accuracy
                 </div>
-                <div className="text-3xl font-bold text-theme-accent">
+                <div className="text-3xl font-bold text-gray-500">
                   {accuracy}%
                 </div>
                 <div className="text-theme-text-muted text-xs">correct</div>
@@ -501,7 +501,7 @@ const TypingTest = () => {
                   style={{ height: `${Math.min(100, test.wpm / 2)}%` }}
                 >
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-theme-secondary px-2 py-1 rounded text-xs whitespace-nowrap">
-                    {test.wpm} WPM, {test.accuracy}% acc
+                    {test.wpm} WPM
                   </div>
                 </div>
               ))}
