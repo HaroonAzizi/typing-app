@@ -6,7 +6,6 @@ import { useGlobalState } from "../store";
 import { getRandomText } from "../utils/textUtils";
 
 const TypingTest = () => {
-  // Global state
   const [timer, setTimer] = useGlobalState("timer");
   const [status, setStatus] = useGlobalState("status");
   const [timeLeft, setTimeLeft] = useGlobalState("timeLeft");
@@ -22,7 +21,7 @@ const TypingTest = () => {
   const [startTime, setStartTime] = useState(null);
   const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });
   const [maxWpm, setMaxWpm] = useState(0); // Track maximum WPM during the test
-  
+
   // Local refs
   const intervalRef = useRef(null);
   const textDisplayRef = useRef(null);
@@ -188,7 +187,7 @@ const TypingTest = () => {
   const calculateStats = () => {
     // Use the maximum WPM recorded during the test, or calculate if none
     const finalWpm = maxWpm > 0 ? maxWpm : calculateFinalWPM();
-    
+
     // Count correctly typed characters for accurate WPM and accuracy
     let correctChars = 0;
     const minLength = Math.min(userInput.length, text.length);
@@ -204,7 +203,7 @@ const TypingTest = () => {
       (correctChars / Math.max(1, userInput.length)) * 100
     );
     setAccuracy(accuracyPercentage);
-    
+
     // Set the final WPM
     setWordsPerMinute(finalWpm);
 
@@ -244,7 +243,7 @@ const TypingTest = () => {
     const endTime = Date.now();
     const elapsedTimeInSeconds = Math.max(1, (endTime - startTime) / 1000);
     const minutes = elapsedTimeInSeconds / 60;
-    
+
     return Math.round(correctChars / 5 / minutes);
   };
 
