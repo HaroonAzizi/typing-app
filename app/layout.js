@@ -12,7 +12,7 @@ export const metadata = {
   openGraph: {
     title: "Typing Speed Test",
     description:
-      "Test and improve your typing speed with this interactive typing test app",
+      "Test and improve your typing speed with this interactive typing test app - Haroon Azizi",
     url: "https://type.haroonazizi.com", // Replace with your actual domain
     siteName: "Typing Speed Test",
     images: [
@@ -20,7 +20,7 @@ export const metadata = {
         url: "/og-image.png", // Path to your image in the public folder
         width: 1200,
         height: 630,
-        alt: "Typing Speed Test Preview",
+        alt: "Typing Speed Test",
       },
     ],
     locale: "en_US",
@@ -30,8 +30,8 @@ export const metadata = {
     card: "summary_large_image",
     title: "Typing Speed Test",
     description:
-      "Test and improve your typing speed with this interactive typing test app",
-    images: ["/og-image.png"], // Path to your image in the public folder
+      "Test and improve your typing speed with this interactive typing test app - Haroon Azizi",
+    images: ["/og-image.png"],
   },
 };
 
