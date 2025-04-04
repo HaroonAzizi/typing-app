@@ -63,15 +63,14 @@ const TypingTest = () => {
       const textRect = textDisplayRef.current.getBoundingClientRect();
 
       setCursorPosition({
-        left: rect.left - textRect.left, // Changed from rect.right to rect.left
+        left: rect.left - textRect.left,
         top: rect.top - textRect.top,
       });
     }
   };
 
-  // Handle input
   const handleKeyDown = (e) => {
-    // Add Tab+Enter shortcut to restart the test
+    // Tab+Enter shortcut to restart the test
     if (e.key === "Enter" && e.getModifierState("Tab")) {
       e.preventDefault();
       resetTest();
@@ -87,7 +86,6 @@ const TypingTest = () => {
       e.preventDefault();
 
       // Only allow backspace if we're not at the beginning of the current word
-      // This prevents editing completed words
       const lastSpaceIndex = userInput.lastIndexOf(" ");
       if (lastSpaceIndex !== userInput.length - 1) {
         // We're not right after a space, so allow backspace
