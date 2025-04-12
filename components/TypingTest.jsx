@@ -34,9 +34,6 @@ const TypingTest = () => {
     setTimeLeft(timer); // Now uses correct initial timer value
   }, [setText, setTimeLeft]);
 
-  // Remove the useEffect that was setting timer to 15
-
-  // Auto-start when user starts typing
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Ignore modifier keys and special keys
@@ -143,7 +140,6 @@ const TypingTest = () => {
     };
   }, [status, setTimeLeft, setStatus, startTime, maxWpm]);
 
-  // Add this new effect here to handle early completion
   useEffect(() => {
     if (status === "running" && userInput === text) {
       clearInterval(intervalRef.current);
@@ -153,7 +149,6 @@ const TypingTest = () => {
     }
   }, [userInput, text, status]);
 
-  // Auto-scroll text display to keep current word visible
   useEffect(() => {
     if (textDisplayRef.current && status === "running") {
       const wordElements = textDisplayRef.current.children;
@@ -166,7 +161,6 @@ const TypingTest = () => {
     }
   }, [currentWordIndex, status]);
 
-  // Separate function for updating word indices and cursor position
   const updateWordIndices = (input) => {
     const words = text.split(" ");
     const typed = input.split(" ");

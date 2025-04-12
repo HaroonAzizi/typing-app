@@ -13,11 +13,11 @@ export const metadata = {
     title: "Typing Speed Test",
     description:
       "Test and improve your typing speed with this interactive typing test app - Haroon Azizi",
-    url: "https://type.haroonazizi.com", // Replace with your actual domain
+    url: "https://type.haroonazizi.com",
     siteName: "Typing Speed Test",
     images: [
       {
-        url: "/og-image.png", // Path to your image in the public folder
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Typing Speed Test",

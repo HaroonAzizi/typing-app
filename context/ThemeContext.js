@@ -1,4 +1,3 @@
-// context/ThemeContext.js
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
@@ -14,15 +13,17 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     // Check if user has a saved preference
     const savedTheme = localStorage.getItem("theme");
-    
+
     if (savedTheme) {
       setIsDarkMode(savedTheme === "dark");
     } else {
       // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
       setIsDarkMode(prefersDark);
     }
-    
+
     // Apply theme to document
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import TypingTest from "../components/TypingTest";
-import DomainAd from "../components/DomainAd"; // Import the DomainAd component
+import DomainAd from "../components/DomainAd";
 import {
   FaGithub,
   FaLinkedin,
@@ -134,7 +134,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      
+
       {/* Domain Ad Component */}
       <DomainAd />
     </main>
