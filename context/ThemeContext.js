@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Create the context
 const ThemeContext = createContext();
 
 // Theme provider component

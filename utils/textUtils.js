@@ -1,6 +1,3 @@
-// utils/textUtils.js
-
-// Sample text passages for typing tests
 const textSamples = [
   "The quick brown fox jumps over the lazy dog. This pangram contains every letter of the English alphabet at least once. Pangrams are often used to test fonts, keyboards, and other text-related tools.",
 
