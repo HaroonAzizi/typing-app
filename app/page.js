@@ -91,44 +91,56 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-theme-accent/10 mt-auto">
+      <footer className="bg-theme-primary py-8 border-t border-theme-accent/10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <Link
-                href="https://haroonazizi.com"
-                className="text-xl font-bold bg-gradient-to-r from-theme-accent to-theme-accent-light bg-clip-text text-transparent"
-              >
-                HaroonAzizi
-              </Link>
-              <p className="text-theme-text-muted text-sm mt-1">
-                © {new Date().getFullYear()} All rights reserved
-              </p>
+            <div className="text-theme-text-muted text-sm">
+              <span className="font-mono">
+                © {new Date().getFullYear()}{" "}
+                {/* <a className="hover: text-white" href="https://haroonazizi.com">
+                  Haroon Azizi
+                </a>
+                .{" "} */}
+              </span>
+              <span className="font-mono text-xs">
+                {" "}
+                Developed and maintained by{" "}
+              </span>
+
+              <span className="font-mono">
+                <a className="hover: text-white" href="https://code.af">
+                  code.af
+                </a>
+                .{" "}
+              </span>
             </div>
-            <div className="flex space-x-6">
+            <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <a
                 href="https://x.com/az_haroon"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
+                className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
               >
                 <FaSquareXTwitter size={20} />
+                {/* <span className="font-mono text-sm">X/Twitter</span> */}
               </a>
               <a
                 href="https://github.com/HaroonAzizi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
+                className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
               >
                 <FaGithub size={20} />
+                {/* <span className="font-mono text-sm">GitHub</span> */}
               </a>
               <a
-                href="https://linkedin.com/in/Haroon-Azizi"
+                href="https://www.linkedin.com/in/haroon-azizi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-theme-text-muted hover:text-theme-accent transition-colors"
+                className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
               >
                 <FaLinkedin size={20} />
+                {/* <span className="font-mono text-sm">LinkedIn</span> */}
               </a>
             </div>
           </div>

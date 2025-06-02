@@ -1,31 +1,62 @@
 "use client";
 
 import React from "react";
+import { FaSquareXTwitter, FaGithub, FaLinkedin } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-blue-800 text-blue-200 py-4 px-6 mt-auto">
-      <div className="max-w-5xl mx-auto flex justify-between items-center text-sm">
-        <div>
-          © {new Date().getFullYear()} Typing by
-          <a
-            className="text-white hover:text-blue-400"
-            href="https://haroonazizi.com"
-          >
-            {" "}
-            Haroon Azizi
-          </a>
-        </div>
-        <div className="flex space-x-4">
-          <span className="hover:text-white cursor-pointer transition-colors">
-            <a href="https://x.com/az_haroon">X/Twitter</a>
-          </span>
-          <span className="hover:text-white cursor-pointer transition-colors">
-            <a href="https://linkedin.com/in/haroon-azizi">LinkedIn</a>
-          </span>
-          <span className="hover:text-white cursor-pointer transition-colors">
-            <a href="https://haroonazizi.com/contact">Contact Me</a>
-          </span>
+    <footer className="bg-theme-primary py-8 border-t border-theme-accent/10">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="text-theme-text-muted text-sm">
+            <span className="font-mono">
+              © {new Date().getFullYear()}{" "}
+              <a className="hover: text-white" href="https://haroonazizi.com">
+                Haroon Azizi
+              </a>
+              .{" "}
+            </span>
+            <span className="font-mono text-xs">
+              {" "}
+              Developed and maintained by{" "}
+            </span>
+
+            <span className="font-mono">
+              <a className="hover: text-white" href="https://code.af">
+                code.af
+              </a>
+              .{" "}
+            </span>
+          </div>
+          <div className="flex items-center space-x-6 mt-4 md:mt-0">
+            <a
+              href="https://x.com/az_haroon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
+            >
+              <FaSquareXTwitter size={20} />
+              {/* <span className="font-mono text-sm">X/Twitter</span> */}
+            </a>
+            <a
+              href="https://github.com/HaroonAzizi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
+            >
+              <FaGithub size={20} />
+              {/* <span className="font-mono text-sm">GitHub</span> */}
+            </a>
+            <a
+              href="https://www.linkedin.com/in/haroon-azizi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-theme-text-muted hover:text-theme-accent transition-colors flex items-center space-x-2"
+            >
+              <FaLinkedin size={20} />
+              {/* <span className="font-mono text-sm">LinkedIn</span> */}
+            </a>
+          </div>
         </div>
       </div>
     </footer>
