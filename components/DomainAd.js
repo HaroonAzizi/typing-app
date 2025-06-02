@@ -13,7 +13,7 @@ export default function DomainAd() {
       localStorage.getItem("domainAdClosedTime") || "0"
     );
     const currentTime = new Date().getTime();
-    const showAgainAfter = 60 * 60 * 1000; // 1 hour in milliseconds
+    const showAgainAfter = 60 * 60 * 1000; // 1 hr
 
     // Only keep it closed if it was closed recently
     if (adClosed === "true" && currentTime - closedTime < showAgainAfter) {
@@ -58,7 +58,7 @@ export default function DomainAd() {
               <div className="flex items-center">
                 <FaGlobe className="text-blue-400 mr-2 text-sm sm:text-base" />
                 <span className="font-mono text-xs sm:text-sm text-white font-medium">
-                  Domain for Sale
+                  Code.af company
                 </span>
               </div>
               <div className="flex space-x-2">
@@ -104,7 +104,7 @@ export default function DomainAd() {
                 </h3>
 
                 <div className="font-mono text-xs sm:text-sm text-slate-300 mb-2 sm:mb-3">
-                  Premium Tech Domain
+                  Web and Mobile App Development
                 </div>
                 <div className="relative h-10 sm:h-12 mb-3 sm:mb-4 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center animate-pulse-text">
@@ -117,21 +117,21 @@ export default function DomainAd() {
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center animate-pulse-text-delay">
                     <span className="text-slate-300 font-mono text-base sm:text-lg">
-                      <a href="mailto:hi@haroonazizi.com"> Your Brand Here</a>
+                      <a href="https://code.af">code.af</a>
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="text-xs sm:text-sm text-slate-400 mb-3 sm:mb-4">
-                Own this premium tech domain for your next project or business.
+              <div className="text-xs sm:text-sm text-slate-400 mb-3 sm:mb-4 text-center">
+                Let us bring your ideas to life.
               </div>
 
               <a
-                href="mailto:hi@haroonazizi.com?subject=Interested%20in%20Buying%20code.af%20Domain"
+                href="https://code.af"
                 className="block w-full py-1.5 sm:py-2 px-3 sm:px-4 bg-blue-600 text-white font-medium rounded text-center hover:bg-blue-500 transition-colors font-mono text-xs sm:text-sm"
               >
-                Inquire Now
+                Check out our website
               </a>
             </div>
           </div>
